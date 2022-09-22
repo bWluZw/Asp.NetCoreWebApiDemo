@@ -1,8 +1,8 @@
-﻿using BVBLog4Net;
-using Microsoft.AspNetCore.Diagnostics;
+﻿using Microsoft.AspNetCore.Diagnostics;
 using System.Net;
 using WebApiBase.Models;
 using WebApiBase.Utils;
+using WebApiBase.Utils.Log4;
 
 namespace WebApiBase.Middlewares
 {
@@ -11,11 +11,13 @@ namespace WebApiBase.Middlewares
 
         private readonly RequestDelegate _next;
         private readonly IHostEnvironment _hostEnvironment;
+        private readonly ILoggerHandler _logger;
 
-        public ExceptionHandleMiddleware(RequestDelegate _next, IHostEnvironment _hostEnvironment)
+        public ExceptionHandleMiddleware(RequestDelegate _next, IHostEnvironment _hostEnvironment,ILoggerHandler _logger)
         {
             this._next = _next;
             this._hostEnvironment = _hostEnvironment;
+            this._logger = _logger;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -28,7 +30,7 @@ namespace WebApiBase.Middlewares
             {
                 string newLine = Environment.NewLine;
                 //日志记录
-                Logger.Singleton.Error($"{newLine}栈堆：{newLine}{ex.ToString()}, {newLine}产生了一个错误信息: {ex.Message}");
+                _logger.Error($"{newLine}栈堆：{newLine}{ex.ToString()}, {newLine}产生了一个错误信息: {ex.Message}");
                 await HandleExceptionAsync(context, ex);
             }
         }

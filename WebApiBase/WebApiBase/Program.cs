@@ -35,7 +35,7 @@ builder.Host.ConfigureLogging((hostingContext, loggingBuilder) =>
 //注入Log4Net
 builder.Services.AddLogging(cfg =>
 {
-    cfg.AddLog4Net("log4.xml");
+    cfg.AddLog4Net();
     //默认的配置文件路径是在根目录，且文件名为log4net.config
     //如果文件路径或名称有变化，需要重新设置其路径或名称
     //比如在项目根目录下创建一个名为cfg的文件夹，将log4net.config文件移入其中，并改名为log.config
@@ -76,7 +76,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 //////自己写的支持泛型存入Jwt 便于扩展
 //builder.Services.AddScoped<TokenHelper>();
 ////依赖注入自定义log4
-//builder.Services.AddTransient<WebApiBase.Utils.ILoggerHandler, WebApiBase.Utils.LoggerHandler>();
+builder.Services.AddSingleton<WebApiBase.Utils.Log4.ILoggerHandler, WebApiBase.Utils.Log4.LoggerHandler>();
 
 //builder.Services.AddScoped<HomeController>();
 #endregion

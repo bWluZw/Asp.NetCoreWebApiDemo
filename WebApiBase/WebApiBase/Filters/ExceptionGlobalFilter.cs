@@ -1,10 +1,9 @@
-﻿using BVBLog4Net;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 using WebApiBase.Models;
 using WebApiBase.Utils;
-using static BVBLog4Net.Logger;
+using WebApiBase.Utils.Log4;
 
 namespace WebApiBase.Filters
 {
@@ -12,10 +11,12 @@ namespace WebApiBase.Filters
     {
 
         private readonly IHostEnvironment _hostEnvironment;
+        private readonly ILoggerHandler logger;
         
-        public ExceptionGlobalFilter(IHostEnvironment _hostEnvironment)
+        public ExceptionGlobalFilter(IHostEnvironment _hostEnvironment,ILoggerHandler logger)
         {
             this._hostEnvironment = _hostEnvironment;
+            this.logger = logger;
         }
 
         public void OnException(ExceptionContext context)
@@ -24,7 +25,7 @@ namespace WebApiBase.Filters
             string newLine = Environment.NewLine;
             string msg = "";
             int code = 0;
-            Logger.Singleton.Error($"{newLine}====开发环境===={newLine}栈堆：{newLine}{ex.StackTrace}, {newLine}产生了一个错误信息: {ex.Message}");
+            logger.Error($"{newLine}====开发环境===={newLine}栈堆：{newLine}{ex.StackTrace}, {newLine}产生了一个错误信息: {ex.Message}");
             if (_hostEnvironment.IsDevelopment())
             {
                 msg = $"{newLine}====开发环境===={newLine}栈堆：{newLine}{ex.StackTrace}, {newLine}产生了一个错误信息: {ex.Message}";

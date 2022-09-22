@@ -18,7 +18,8 @@ namespace WebApiBase.DatabaseAccessor
         /// <summary>
         /// 处理连接串和数据库
         /// </summary>
-        /// <param name="dbName"></param>
+        /// <param name="connectionString"></param>
+        /// <param name="dataBaseType"></param>
         /// <returns></returns>
         private static (DbProviderFactory, string) ProviderBuilder(string connectionString, DataBaseType dataBaseType)
         {
@@ -174,7 +175,10 @@ namespace WebApiBase.DatabaseAccessor
         /// <summary>
         /// 执行SQL，并返回影响的行数
         /// </summary>
+        /// <param name="connectionStr"></param>
+        /// <param name="dataBaseType"></param>
         /// <param name="sql">SQL语句</param>
+        /// <param name="paramsList"></param>
         /// <returns></returns>
         public static int ExecuteSqlNonQuery(string connectionStr,DataBaseType dataBaseType, string sql, DbParameter[] paramsList = null)
         {
@@ -185,6 +189,15 @@ namespace WebApiBase.DatabaseAccessor
             return count;
 
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connectionStr"></param>
+        /// <param name="dataBaseType"></param>
+        /// <param name="sql"></param>
+        /// <param name="paramsList"></param>
+        /// <returns></returns>
         public static DataSet SqlQuery(string connectionStr, DataBaseType dataBaseType, string sql, DbParameter[] paramsList = null)
         {
             (DbProviderFactory provider, string connStr) = ProviderBuilder(connectionStr, dataBaseType);
@@ -200,7 +213,14 @@ namespace WebApiBase.DatabaseAccessor
             return ds;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connectionStr"></param>
+        /// <param name="dataBaseType"></param>
+        /// <param name="sql"></param>
+        /// <param name="paramsList"></param>
+        /// <returns></returns>
         public static async Task<DataSet> SqlQueryAsync(string connectionStr, DataBaseType dataBaseType, string sql, DbParameter[] paramsList = null)
         {
             var res = await Task.Run(() =>
@@ -219,6 +239,14 @@ namespace WebApiBase.DatabaseAccessor
             return res;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connectionStr"></param>
+        /// <param name="dataBaseType"></param>
+        /// <param name="sql"></param>
+        /// <param name="paramsList"></param>
+        /// <returns></returns>
         public static int SqlExecute(string connectionStr, DataBaseType dataBaseType, string sql, DbParameter[] paramsList = null)
         {
             (DbProviderFactory provider, string connStr) = ProviderBuilder(connectionStr, dataBaseType);
@@ -229,6 +257,14 @@ namespace WebApiBase.DatabaseAccessor
             return rows;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connectionStr"></param>
+        /// <param name="dataBaseType"></param>
+        /// <param name="sql"></param>
+        /// <param name="paramsList"></param>
+        /// <returns></returns>
         public static async Task<int> SqlExecuteAsync(string connectionStr, DataBaseType dataBaseType, string sql, DbParameter[] paramsList = null)
         {
             (DbProviderFactory provider, string connStr) = ProviderBuilder(connectionStr, dataBaseType);
@@ -239,6 +275,13 @@ namespace WebApiBase.DatabaseAccessor
             return rows;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connectionStr"></param>
+        /// <param name="dataBaseType"></param>
+        /// <param name="sqlList"></param>
+        /// <returns></returns>
         public static int SqlExecuteTran(string connectionStr, DataBaseType dataBaseType, List<string> sqlList)
         {
             (DbProviderFactory provider, string connStr) = ProviderBuilder(connectionStr, dataBaseType);
