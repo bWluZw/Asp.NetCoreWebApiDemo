@@ -102,11 +102,8 @@ namespace WebApiBase.Services.UserManager
             //list.Where(i => i.DbName == "Db1").FirstOrDefault();
             MySqlParameter[] test = { new MySqlParameter("@ID", 1) };
             var test2 = _userRep.GetDbContext().SqlQuery("select * from user_info where ID=@ID", test);
+            var test3 = _userRep.SqlQuery("select * from user_info where ID=@ID", test);
 
-            //var test3 = extraDbHelper.Get().Where(i => i.DbName == "Db1").FirstOrDefault().SqlQuery();
-            //var test3 = _dbInfo.DetachedEntities.Where(i => i.Name == "Db1").FirstOrDefault().SqlQuery("select * from user_info");
-            //var test4 = _dbInfo.DetachedEntities.Where(i => i.Name == "Db2").FirstOrDefault().SqlQuery("select * from system.test");
-            //var test5 = _dbInfo.DetachedEntities.Where(i => i.Name == "Db3").FirstOrDefault().SqlQuery("select * from test");
 
             var res = await Task.Run(() =>
             {

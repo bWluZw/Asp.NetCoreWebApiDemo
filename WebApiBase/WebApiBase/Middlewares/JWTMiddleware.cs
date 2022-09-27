@@ -24,10 +24,6 @@ namespace WebApiBase.Middlewares
             //然后调用next指向下一个中间件
             System.Diagnostics.Debug.WriteLine("经过JWTMiddleware中间件");
 
-            context.Response.Headers["Access-Control-Allow-Origin"] = "*";
-            context.Response.Headers["Access-Control-Allow-Headers"] = "content-type";
-            context.Response.Headers["Access-Control-Request-Method"] = "GET,POST";
-
             string oriToken = context.Request.Headers["Authorization"].ToString();
             if (string.IsNullOrEmpty(oriToken))
             {

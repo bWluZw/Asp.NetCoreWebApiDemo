@@ -216,13 +216,21 @@ builder.Services.AddEndpointsApiExplorer();
 
 // ˝æ›ø‚≈‰÷√
 
-var connectionString = builder.Configuration.GetSection("DefaultConnection");
+//var connectionString = builder.Configuration.GetSection("DbInfo").GetSection("Db1")["DbType"];
+var dbInfoList = builder.Configuration.GetSection("DbInfo").GetChildren();
+foreach (var item in dbInfoList)
+{
+    var dbType = item["DbType"];
+    var dbConn = item["ConnectionStr"];
+}
 
 builder.Services.AddDbContext<BaseDbContext>(opt =>
 {
     string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     var serverVersion = ServerVersion.AutoDetect(connectionString);
     opt.UseMySql(connectionString, serverVersion);
+
+
     //sql¿πΩÿ∆˜£¨‘› ±∆˙”√
     //opt.AddInterceptors(new SqlCommandProfilerInterceptor());
     opt.LogTo((msg) =>

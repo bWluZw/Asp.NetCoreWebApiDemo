@@ -12,15 +12,27 @@ namespace WebApiBase.Db
     public class BaseDbContext : DbContext
     {
         //public static readonly LoggerFactory LoggerFactory = new LoggerFactory(new[] { new DebugLoggerProvider() });
+        //string _connectionString = string.Empty;
+        //string _providerType = string.Empty;
+        //public BaseDbContext(string connectionString, string providerType)
+        //{
+        //    _connectionString = connectionString;
+        //    _providerType = providerType;
+        //}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            ////var connectionString = Configuration["ConnectionStrings:DefaultConnection"];
-            //optionsBuilder.UseMySql(
-            //    @"Server=(localdb)\mssqllocaldb;Database=Blogging;Trusted_Connection=True", Microsoft.EntityFrameworkCore.ServerVersion.Parse("5.6.28-mysql"));
+            //if (!optionsBuilder.IsConfigured)
+            //{
+            //    if ("Npgsql.EntityFrameworkCore.PostgreSQL" == _providerType)
+            //        optionsBuilder.UseNpgsql(_connectionString);
+            //    else if ("Microsoft.EntityFrameworkCore.SqlServer" == _providerType)
+            //        optionsBuilder.UseSqlServer(_connectionString);
+            //    else if ("Microsoft.EntityFrameworkCore.Sqlite" == _providerType)
+            //        optionsBuilder.UseSqlite(_connectionString);
+            //    else
+            //        throw new ApplicationException("未知的数据库 Provider");
+            //}
 
-            //string DbString = "server=192.168.100.139;database=net6coretest;uid=root;pwd=60728160";
-            //optionsBuilder.UseMySql(DbString, new MySqlServerVersion(new Version(8, 0, 22)));
-            //optionsBuilder.UseLoggerFactory(LoggerFactory);
             base.OnConfiguring(optionsBuilder);
         }
 
@@ -28,6 +40,7 @@ namespace WebApiBase.Db
         {
             Assembly assembly = Assembly.Load(Assembly.GetExecutingAssembly().GetName().Name);
             modelBuilder.RegisterEntities(assembly);
+
             base.OnModelCreating(modelBuilder);
         }
 
