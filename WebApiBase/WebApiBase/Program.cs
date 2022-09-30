@@ -17,9 +17,7 @@ using WebApiBase.DatabaseAccessor;
 using WebApiBase.Db;
 using WebApiBase.Extensions;
 using WebApiBase.Filters;
-using WebApiBase.Interceptor;
 using WebApiBase.Models;
-using WebApiBase.Repository;
 using WebApiBase.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -143,7 +141,7 @@ builder.Services.AddSwaggerGen(sw =>
     {
         Title = "AspApi",
         Description = "Api",
-        Contact=new OpenApiContact() { Name= "bWluZw" },
+        Contact = new OpenApiContact() { Name = "bWluZw" },
         Version = "v1"
     });
 
@@ -224,7 +222,8 @@ foreach (var item in dbInfoList)
     var dbConn = item["ConnectionStr"];
 }
 
-builder.Services.AddDbContext<BaseDbContext>(opt =>
+//使用DbContext连接池，可以提升ef的性能以及解决大部分的数据库连接池的问题
+builder.Services.AddDbContextPool<BaseDbContext>((opt) =>
 {
     string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     var serverVersion = ServerVersion.AutoDetect(connectionString);
@@ -244,8 +243,7 @@ builder.Services.AddDbContext<BaseDbContext>(opt =>
     //EditMifrationName  //输入自定义的迁移记录名
     //Remove-Migration  //删除刚刚生成的迁移记录
     //Update-Database  //迁移至数据库
-
-});
+}, poolSize: 64);
 
 
 #region 禁止默认行为
@@ -297,7 +295,6 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     //JWT相关工具和配置
     builder.RegisterType<JwtSecurityTokenHandler>();
     builder.RegisterType<TokenHelper>();
-    builder.RegisterType<ExtraDbHelper>();
 
 
     //自动注册该dll全局
@@ -355,32 +352,32 @@ app.MapControllers();
 
 //if (app.Environment.IsDevelopment())
 //{
-    app.UseSwagger(c =>
+app.UseSwagger(c =>
+{
+    c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
     {
-        c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+        var updatedPaths = new OpenApiPaths();
+        foreach (var entry in swaggerDoc.Paths)
         {
-            var updatedPaths = new OpenApiPaths();
-            foreach (var entry in swaggerDoc.Paths)
-            {
-                updatedPaths.Add(
-                    entry.Key.Replace("v{version}", swaggerDoc.Info.Version),
-                    entry.Value);
-            }
-            swaggerDoc.Paths = updatedPaths;
-        });
+            updatedPaths.Add(
+                entry.Key.Replace("v{version}", swaggerDoc.Info.Version),
+                entry.Value);
+        }
+        swaggerDoc.Paths = updatedPaths;
     });
-    //app.UseSwaggerUI(c =>
-    //{
-    //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api V1");
+});
+//app.UseSwaggerUI(c =>
+//{
+//    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api V1");
 
-    //    c.InjectJavascript(Path.Combine(AppContext.BaseDirectory), "/Swagger/swagger.js");
-    //});
-    app.UseKnife4UI(c =>
-    {
-        c.RoutePrefix = string.Empty; ; // serve the UI at root
+//    c.InjectJavascript(Path.Combine(AppContext.BaseDirectory), "/Swagger/swagger.js");
+//});
+app.UseKnife4UI(c =>
+{
+    c.RoutePrefix = string.Empty; ; // serve the UI at root
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "ASP API V1");
-    });
-    app.UseDeveloperExceptionPage();
+});
+app.UseDeveloperExceptionPage();
 //}
 //else
 //{

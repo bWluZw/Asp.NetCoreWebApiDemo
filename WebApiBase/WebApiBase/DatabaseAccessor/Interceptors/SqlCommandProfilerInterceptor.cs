@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Data.Common;
 
-namespace WebApiBase.Interceptor
+namespace WebApiBase.DatabaseAccessor
 {
     public class SqlCommandProfilerInterceptor: DbCommandInterceptor
     {

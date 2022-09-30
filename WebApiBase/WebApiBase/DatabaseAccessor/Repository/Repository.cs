@@ -3,11 +3,10 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Data;
 using System.Data.Common;
 using System.Reflection;
-using WebApiBase.DatabaseAccessor;
 using WebApiBase.Db;
 using WebApiBase.Models;
 
-namespace WebApiBase.Repository
+namespace WebApiBase.DatabaseAccessor
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {

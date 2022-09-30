@@ -6,7 +6,6 @@ using System.Data.Common;
 using WebApiBase.DatabaseAccessor;
 using WebApiBase.Extensions;
 using WebApiBase.Models;
-using WebApiBase.Repository;
 using WebApiBase.Utils;
 
 namespace WebApiBase.Services.UserManager
@@ -103,7 +102,9 @@ namespace WebApiBase.Services.UserManager
             MySqlParameter[] test = { new MySqlParameter("@ID", 1) };
             var test2 = _userRep.GetDbContext().SqlQuery("select * from user_info where ID=@ID", test);
             var test3 = _userRep.SqlQuery("select * from user_info where ID=@ID", test);
-
+            System.Transactions.TransactionScope dbTransaction = new System.Transactions.TransactionScope();
+            dbTransaction.Complete();
+            dbTransaction.Dispose();
 
             var res = await Task.Run(() =>
             {

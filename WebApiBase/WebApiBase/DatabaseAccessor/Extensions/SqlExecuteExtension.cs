@@ -4,7 +4,6 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using WebApiBase.DatabaseAccessor;
 using WebApiBase.Models;
-using WebApiBase.Repository;
 
 namespace WebApiBase.Extensions
 {

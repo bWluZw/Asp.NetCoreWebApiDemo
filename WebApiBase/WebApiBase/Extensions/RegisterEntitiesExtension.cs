@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using WebApiBase.DatabaseAccessor;
 using WebApiBase.Models;
 
 namespace WebApiBase.Extensions

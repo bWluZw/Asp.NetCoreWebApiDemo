@@ -4,7 +4,7 @@ using System.Data;
 using System.Data.Common;
 using WebApiBase.Models;
 
-namespace WebApiBase.Repository
+namespace WebApiBase.DatabaseAccessor
 {
     public interface IRepository<TEntity> where TEntity : class
     {

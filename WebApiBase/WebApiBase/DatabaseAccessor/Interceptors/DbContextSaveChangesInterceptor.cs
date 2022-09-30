@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace WebApiBase.Interceptor
+namespace WebApiBase.DatabaseAccessor
 {
     public class DbContextSaveChangesInterceptor: SaveChangesInterceptor
     {
