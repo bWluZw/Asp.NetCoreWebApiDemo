@@ -1,6 +1,6 @@
 # Asp.NetCore WebApi Demo
 基于Asp.NetCore的WebApi项目demo
-
+(使用.net6)
 ## 已完成或已添加功能：
 
 JWT鉴权
@@ -39,5 +39,7 @@ json相关（NewtonsoftJson）
 事件总线
 
 消息队列
+
+DDD领域驱动设计
 
 MORE...
